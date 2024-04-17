@@ -1,3 +1,4 @@
+const path = require ('path');
 const express = require('express');
 require('dotenv').config();
 
@@ -8,6 +9,10 @@ const { morganMiddleware } = require('./middlewares/morgan');
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+app.set('views', path.join(__dirname + '/views'));
+app.set('view engine', 'pug');
+
+app.use(express.static('public'));
 app.use(express.json());
 
 app.use(
@@ -18,22 +23,8 @@ app.use(
 
 app.use(morganMiddleware);
 
-app.get('/', async (req, res) => {
-  try {
-    const response = await axios.get(
-      'https://jsonplaceholder.typicode.com/todos',
-    );
-
-    const todos = response.data
-      .slice(0, 10)
-      .map((todo) => `<li>${todo.title}</li>`)
-      .join('');
-
-    return res.send(`Hello there! Your to-do list:<br/><br/>${todos}`);
-  } catch (err) {
-    logger.error(`Error fetching data from jsonplaceholder: Error: ${err}`);
-    return res.status(500).send('Internal server error');
-  }
+app.get('/', (req, res) => {
+   return res.render('index', { title: 'Apaleo OAuth Example' });
 });
 
 app.listen(PORT, () => {
