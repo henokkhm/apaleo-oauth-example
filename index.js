@@ -1,9 +1,8 @@
 const express = require('express');
-const axios = require('axios');
 require('dotenv').config();
 
+const { axios } = require('./src/config/axiosInstance');
 const { logger } = require('./src/config/logger');
-
 const { morganMiddleware } = require('./src/middlewares/morgan');
 
 const app = express();
