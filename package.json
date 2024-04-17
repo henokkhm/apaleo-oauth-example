@@ -1,0 +1,24 @@
+{
+  "name": "apaleo-oauth-example",
+  "version": "1.0.0",
+  "description": "This repository contains an example implementation of using OAuth 2.0 and OpenID services of apaleo.com",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/henokkhm/apaleo-oauth-example.git"
+  },
+  "keywords": [
+    "apaleo",
+    "oauth",
+    "openid"
+  ],
+  "author": "Henok Kirubel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/henokkhm/apaleo-oauth-example/issues"
+  },
+  "homepage": "https://github.com/henokkhm/apaleo-oauth-example#readme"
+}
