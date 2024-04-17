@@ -1,9 +1,9 @@
 const express = require('express');
 require('dotenv').config();
 
-const { axios } = require('./src/config/axiosInstance');
-const { logger } = require('./src/config/logger');
-const { morganMiddleware } = require('./src/middlewares/morgan');
+const { axios } = require('./config/axiosInstance');
+const { logger } = require('./config/logger');
+const { morganMiddleware } = require('./middlewares/morgan');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
