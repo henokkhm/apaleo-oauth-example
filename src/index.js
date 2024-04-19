@@ -24,7 +24,13 @@ app.use(
 app.use(morganMiddleware);
 
 app.get('/', (req, res) => {
-   return res.render('index', { title: 'Apaleo OAuth Example' });
+  return res.render('index', { title: 'Apaleo OAuth Example' });
+});
+
+app.get('/apaleo-auth', (req, res) => {
+  // retrive the authorization code from the query string
+  //
+  return res.render('index', { title: 'Apaleo OAuth Example' });
 });
 
 app.listen(PORT, () => {
