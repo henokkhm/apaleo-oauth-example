@@ -27,14 +27,9 @@ app.get('/', (req, res) => {
   return res.render('index', { title: 'Apaleo OAuth Example' });
 });
 
-app.get('/apaleo-register-redirect', (req, res) => {
+app.get('/apaleo-auth-redirect', (req, res) => {
   const queryParams = req.query;
-  return res.render('apaleo-register-redirect', { title: 'Data Returned From Apaleo', queryParams });
-});
-
-app.get('/apaleo-login-redirect', (req, res) => {
-  const queryParams = req.query;
-  return res.render('apaleo-login-redirect', { title: 'Data Returned From Apaleo', queryParams });
+  return res.render('apaleo-auth-redirect', { title: 'Data Returned From Apaleo', queryParams });
 });
 
 app.listen(PORT, () => {
