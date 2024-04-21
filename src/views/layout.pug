@@ -1,0 +1,29 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title= title
+        link(rel="stylesheet", href="/css/reset.css")
+        link(rel="stylesheet", href="/css/styles.css")
+        script.
+            document.addEventListener('DOMContentLoaded', function() {
+                const loginStatus = document.querySelector('#login-status');
+                const isLoggedIn = localStorage.getItem('logged-in');
+                if (isLoggedIn === 'true') {
+                    loginStatus.textContent = 'You are logged in.';
+                    window.location.href = '/dashboard';
+                } else {
+                    loginStatus.textContent = 'You are NOT logged in.';
+                }
+            });
+
+        body
+            main
+                section.container
+                    block content
+                    p#login-status
+                section.messages
+                    block messages
+
+

@@ -1,24 +1,9 @@
-doctype html
-html(lang="en")
-    head
-        meta(charset="UTF-8")
-        meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        title= title
-        link(rel="stylesheet", href="/css/reset.css")
-        link(rel="stylesheet", href="/css/styles.css")
-        script.
-            document.addEventListener('DOMContentLoaded', function() {
-                var isLoggedIn = localStorage.getItem('logged-in');
-                if (isLoggedIn === 'true') {
-                    window.location.href = '/dashboard';
-                }
-            });
-    body
-        
-        main
-            section.container
-                button(href="#") Register Using Apaleo
-                button(href="#") Log in Using Apaleo
-            section.messages
-                ul 
+extends layout.pug
 
+block content
+    .btn-container
+        a.btn-primary(href="https://identity.apaleo.com/connect/authorize?response_type=code&scope=openid profile&client_id=FSXN-AC-PAYJIM&redirect_uri=https://apaleo-oauth-example.onrender.com/apaleo-register-redirect&state=23371848-524f-40e5-bdf1-c0a8d6c2fc1d") Register Using Apaleo
+        a.btn-primary(href="https://identity.apaleo.com/connect/authorize?response_type=code&scope=offline_access folios.manage folios.payment-with-charges folios.read invoices.read invoices.manage openid profile setup.read reservations.read reservations.manage&client_id=FSXN-AC-PAYJIM&redirect_uri=https://apaleo-oauth-example.onrender.com/apaleo-login-redirect&state=23371848-524f-40e5-bdf1-c0a8d6c2fc1d") Log in Using Apaleo
+
+block messages
+    p No messages
