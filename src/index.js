@@ -1,4 +1,4 @@
-const path = require ('path');
+const path = require('path');
 const express = require('express');
 require('dotenv').config();
 
@@ -27,9 +27,28 @@ app.get('/', (req, res) => {
   return res.render('index', { title: 'Apaleo OAuth Example' });
 });
 
-app.get('/apaleo-auth-redirect', (req, res) => {
+// The following route accepts the authorization code from Apaleo
+app.get('/auth/apaleo/redirect', (req, res) => {
   const queryParams = req.query;
-  return res.render('apaleo-auth-redirect', { title: 'Data Returned From Apaleo', queryParams });
+  return res.render('auth-apaleo-redirect', {
+    title: 'Data Returned From Apaleo',
+    queryParams,
+  });
+});
+
+// The following route accepts the authorization code from the 
+// front-end (to mimic a SPA), and sends it to Apaleo in order to 
+// exchange it for an access token, refresh token, and user profile info
+// If successful, it redirects the user to the dashboard
+app.get('/auth/apaleo/token-exchange-handler', (req, res) => {
+  logger.info('Query String Parameters:', req.query);
+  logger.info('JSON Request Body:', req.body);
+
+  try {
+  
+  } catch(e) {
+    logger.error(`Error while exchanging auth-code for access token`)
+  };
 });
 
 app.listen(PORT, () => {
