@@ -40,7 +40,7 @@ app.get('/auth/apaleo/redirect', (req, res) => {
 // front-end (to mimic a SPA), and sends it to Apaleo in order to
 // exchange it for an access token, refresh token, and user profile info
 // If successful, it redirects the user to the dashboard
-app.get('/auth/apaleo/token-exchange-handler', (req, res) => {
+app.post('/auth/apaleo/token-exchange-handler', (req, res) => {
   logger.info('Query String Parameters:', req.query);
   logger.info('JSON Request Body:', req.body);
 

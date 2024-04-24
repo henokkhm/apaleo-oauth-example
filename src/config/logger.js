@@ -5,7 +5,7 @@ const {
 } = winston.format;
 
 const logger = winston.createLogger({
-  level: process.env.LOG_LEVEL || 'verbose',
+  level: 'verbose',
   format: combine(
     label({ label: '[LOGGER]' }),
     timestamp({
