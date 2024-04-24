@@ -39,7 +39,9 @@ block messages
                     requestStatusDiv.innerText = "There was an error while Syncing data from Apaleo servers."
                     console.error('Network response was not ok');
                 }
-                requestStatusDiv.innerText = 'Data synced successfully. Redirecting...';
+                requestStatusDiv.innerText = 'Data synced successfully. Check console';
+                console.log(response.data);
+
             })
             .catch(error => {
                 console.error('There was a problem syncing the data:', error);

@@ -92,6 +92,78 @@ app.get('/auth/apaleo/token-exchange-handler', (req, res) => {
       .then((response) => {
         logger.info('Apaleo /connect/token endpoint response:', response.data);
 
+        /**
+         * Example response from Apaleo
+         * {
+         *   "id_token": "eyJhbG.............aGV_EyOANg",
+         *   "access_token": "eyJhbGciOi.....Upe6r6hHNLiNQ",
+         *   "expires_in": 3600,
+         *   "token_type": "Bearer",
+         *   "refresh_token": "_A4CpoIDT.......qYEpxEW8g",
+         *   "scope": "openid profile availability.read rates.read reservations.read identity:account-users.read offline_access"
+         * }
+         *
+         *  From Apaleo's Docs
+         *  ==================
+         *
+         *  access_token........An access token that can be provided in subsequent calls, for example to apaleo API services.
+         *  id_token............It is sent to the client application as part of an OpenID Connect flow. It is used by the client to authenticate the user.
+         *  expires_in..........The time period (in seconds) for which the access token is valid. After this time period, the token will no longer be valid, and a new one must be retrieved.
+         *  token_type..........How the access token may be used: always Bearer.
+         *  refresh_token.......This token is included if the offline_access scope was requested and granted. This is a long-lived token that can be used to automatically generate a new access_token when the current one expires. This should be kept confidential.
+         *  scope...............A space-separated list of scopes that have been granted for this access_token.
+         */
+
+        const {
+          id_token,
+          access_token,
+          expires_in,
+          token_type,
+          refresh_token,
+          scope,
+        } = response.data;
+
+        if (
+          !id_token ||
+          !access_token ||
+          !expires_in ||
+          !token_type ||
+          !refresh_token ||
+          !scope
+        ) {
+          logger.error("Missing fields in Apaleo's response");
+        }
+
+        // TODO: Save response data to database
+
+        // STEP 10: Use Access token to request private data from api.apaleo.com
+
+        axios
+          .get('https://api.apaleo.com/inventory/v1/properties/MUC', {
+            headers: {
+              Authorization: `Bearer ${access_token}`,
+            },
+          })
+          .then((response) => {
+            logger.info(
+              'Response from api.apaleo.com/inventory/v1/properties/MUC:',
+              response.data,
+            );
+            return res
+              .status(200)
+              .send({
+                message: 'successfully fetched data from Apaleo',
+                data: response.data,
+              });
+          })
+          .catch((error) => {
+            logger.error(
+              `Error while fetching data from api.apaleo.com/inventory/v1/properties/MUC ${error}`,
+            );
+            return res
+              .status(500)
+              .send({ message: `Error while fetching data from api.apaleo.com` });
+          });
       })
       .catch((error) => {
         logger.error(`Error exchanging auth-code for access token ${error}`);
