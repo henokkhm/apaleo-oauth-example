@@ -1,0 +1,55 @@
+extends layout.pug
+
+block content
+    h3 Auth Redirect URL
+    div#request-status
+
+block messages
+    h3 Query String Params
+    table.tbl 
+        each value, key in queryParams
+            tr
+                td #{key}
+                td #{value}
+    
+     script.
+        const requestStatusDiv = document.querySelector('#request-status');
+
+        function getQueryStringParams() {
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const params = {};
+            for (const [key, value] of urlParams.entries()) {
+                params[key] = value;
+            }
+            return params;
+        }
+
+        function sendDataToEndpoint(data, endpoint) {
+            requestStatusDiv.innerText = "Syncing data from Apaleo servers. Please wait..."
+            fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    requestStatusDiv.innerText = "There was an error while Syncing data from Apaleo servers."
+                    console.error('Network response was not ok');
+                }
+                requestStatusDiv.innerText = 'Data synced successfully. Check console';
+                console.log(response.data);
+
+            })
+            .catch(error => {
+                console.error('There was a problem syncing the data:', error);
+            });
+        }
+
+        window.onload = function() {
+            const queryParams = getQueryStringParams();
+            const endpoint = 'https://apaleo-oauth-example.onrender.com/auth/apaleo/token-exchange-handler';
+            sendDataToEndpoint(queryParams, endpoint);
+        };
