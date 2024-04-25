@@ -1,5 +1,6 @@
 const path = require('path');
 const express = require('express');
+const cors = require('cors');
 require('dotenv').config();
 
 const { axios } = require('./config/axiosInstance');
@@ -22,6 +23,8 @@ app.use(
 );
 
 app.use(morganMiddleware);
+
+app.use(cors());
 
 app.get('/', (req, res) => {
   return res.render('index', { title: 'Apaleo OAuth Example' });
