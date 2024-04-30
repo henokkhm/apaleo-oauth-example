@@ -1,28 +1,11 @@
-const winston = require('winston');
+const { createLogger, format, transports } = require('winston');
 
-const {
-  combine, timestamp, json, label,
-} = winston.format;
+const { combine, timestamp, prettyPrint, errors } = format;
 
-const logger = winston.createLogger({
+const logger = createLogger({
   level: 'verbose',
-  format: combine(
-    label({ label: '[LOGGER]' }),
-    timestamp({
-      format: 'YYYY-MM-DD hh:mm:ss.SSS A', // 2022-01-25 03:23:10.350 PM
-    }),
-    json(),
-  ),
-  transports: [
-    new winston.transports.Console(),
-    new winston.transports.File({
-      filename: 'combined.log',
-    }),
-    new winston.transports.File({
-      filename: 'errors.log',
-      level: 'error',
-    }),
-  ],
+  format: combine(errors({ stack: true }), timestamp(), prettyPrint()),
+  transports: [new transports.Console()],
 });
 
 module.exports = {

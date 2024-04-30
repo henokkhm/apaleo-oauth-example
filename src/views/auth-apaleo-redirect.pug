@@ -50,6 +50,6 @@ block messages
 
         window.onload = function() {
             const queryParams = getQueryStringParams();
-            const endpoint = 'https://apaleo-oauth-example.onrender.com/auth/apaleo/token-exchange-handler';
+            const endpoint = 'http://localhost:3000/auth/apaleo/token-exchange-handler';
             sendDataToEndpoint(queryParams, endpoint);
         };

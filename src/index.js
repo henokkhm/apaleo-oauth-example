@@ -44,8 +44,9 @@ app.get('/auth/apaleo/redirect', (req, res) => {
 // exchange it for an access token, refresh token, and user profile info
 // If successful, it redirects the user to the dashboard
 app.post('/auth/apaleo/token-exchange-handler', (req, res) => {
-  logger.info('Query String Parameters:', req.query);
-  logger.info('JSON Request Body:', req.body);
+  logger.info("Exchanging auth-code for access token...")
+  logger.info(`Query String Parameters: ${JSON.stringify(req.query)}`);
+  logger.info(`Request body: ${JSON.stringify(req.body)}`);
 
   const { errorId, code, state, session_state } = req.body;
 
@@ -53,7 +54,7 @@ app.post('/auth/apaleo/token-exchange-handler', (req, res) => {
     // we get an error if the user doesn't give consent.
     // The frontend should redirect to the home page, and use
     // React-toastify to notify the user
-    logger.error(`Apaleo returned error with code ${errorId}`);
+    logger.error(`Apaleo returned error with code ${JSON.stringify(errorId)}`);
     return res
       .status(500)
       .send({ message: `Apaleo returned error with code ${errorId}` });
@@ -66,7 +67,6 @@ app.post('/auth/apaleo/token-exchange-handler', (req, res) => {
 
   try {
     // STEP 7: Exchange the auth-code for Access token and
-    const data = new URLSearchParams();
     const { APALEO_CLIENT_ID, APALEO_CLIENT_SECRET } = process.env;
 
     if (!APALEO_CLIENT_ID) {
@@ -77,13 +77,14 @@ app.post('/auth/apaleo/token-exchange-handler', (req, res) => {
       logger.error('APALEO_CLIENT_SECRET not set in environment variables');
     }
 
+    const data = new URLSearchParams();
     data.append('client_id', APALEO_CLIENT_ID);
     data.append('client_secret', APALEO_CLIENT_SECRET);
     data.append('grant_type', 'authorization_code');
     data.append('code', code);
     data.append(
       'redirect_uri',
-      'https://apaleo-oauth-example.onrender.com/dashboard',
+      'https://apaleo-oauth-example.onrender.com/auth/apaleo/redirect',
     );
 
     axios
@@ -93,7 +94,9 @@ app.post('/auth/apaleo/token-exchange-handler', (req, res) => {
         },
       })
       .then((response) => {
-        logger.info('Apaleo /connect/token endpoint response:', response.data);
+        logger.info(
+          `Apaleo /connect/token endpoint response: ${JSON.stringify(response.data)}`,
+        );
 
         /**
          * Example response from Apaleo
@@ -149,33 +152,33 @@ app.post('/auth/apaleo/token-exchange-handler', (req, res) => {
           })
           .then((response) => {
             logger.info(
-              'Response from api.apaleo.com/inventory/v1/properties/MUC:',
-              response.data,
+              `Response from api.apaleo.com/inventory/v1/properties/MUC:${JSON.stringify(response.data)}`,
             );
-            return res
-              .status(200)
-              .send({
-                message: 'successfully fetched data from Apaleo',
-                data: response.data,
-              });
+            return res.status(200).send({
+              message: 'successfully fetched data from Apaleo',
+              data: response.data,
+            });
           })
           .catch((error) => {
             logger.error(
-              `Error while fetching data from api.apaleo.com/inventory/v1/properties/MUC ${error}`,
+              `Error while fetching data from api.apaleo.com/inventory/v1/properties/MUC ${JSON.stringify(error)}`,
             );
             return res
               .status(500)
-              .send({ message: `Error while fetching data from api.apaleo.com` });
+              .send({
+                message: `Error while fetching data from api.apaleo.com`,
+              });
           });
       })
       .catch((error) => {
-        logger.error(`Error exchanging auth-code for access token ${error}`);
+        throw new Error(`Error exchanging auth-code for access token ${JSON.stringify(error)}`);
+        logger.error(`Error exchanging auth-code for access token ${JSON.stringify(error)}`);
         return res
           .status(500)
           .send({ message: `Error exchanging auth-code for access token` });
       });
   } catch (error) {
-    logger.error(`Error in /token-exchange-handler ${error}`);
+    logger.error(`Error in /token-exchange-handler ${JSON.stringify(error)}`);
   }
 });
 
