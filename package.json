@@ -25,11 +25,12 @@
   "homepage": "https://github.com/henokkhm/apaleo-oauth-example#readme",
   "dependencies": {
     "axios": "^1.6.8",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "morgan": "^1.10.0",
     "nodemon": "^3.1.0",
     "pug": "^3.0.2",
-    "winston": "^3.13.0"
+    "winston": "^3.2.1"
   }
 }

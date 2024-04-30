@@ -15,7 +15,7 @@ const morganMiddleware = morgan(
       // Configure Morgan to use our custom logger with the http severity
       write: (message) => {
         const data = JSON.parse(message);
-        logger.http('incoming-request', data);
+        logger.http(`incoming-request. Data: ${JSON.stringify(data)}`);
       },
     },
   },
